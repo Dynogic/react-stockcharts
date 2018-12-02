@@ -22,3 +22,4 @@ export { default as ElderRaySeries } from "./ElderRaySeries";
 export { default as VolumeProfileSeries } from "./VolumeProfileSeries";
 export { default as StraightLine } from "./StraightLine";
 export { default as SARSeries } from "./SARSeries";
+export { default as TimeDomainMarker } from "./TimeDomainMarker";
