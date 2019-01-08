@@ -1,4 +1,5 @@
 export { default as EdgeIndicator } from "./EdgeIndicator";
+export { default as EdgeCoordinatesProxy } from "./EdgeCoordinatesProxy";
 export { default as CurrentCoordinate } from "./CurrentCoordinate";
 export { default as MouseCoordinateX } from "./MouseCoordinateX";
 export { default as MouseCoordinateXV2 } from "./MouseCoordinateXV2";
