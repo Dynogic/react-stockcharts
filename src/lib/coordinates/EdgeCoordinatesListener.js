@@ -8,7 +8,7 @@ import { getAxisCanvas } from "../GenericComponent";
 
 import { first, last } from "../utils";
 
-class EdgeCoordinatesProxy extends Component {
+class EdgeCoordinatesListener extends Component {
 	constructor(props) {
 		super(props);
 		this.renderSVG = this.renderSVG.bind(this);
@@ -36,7 +36,7 @@ class EdgeCoordinatesProxy extends Component {
 	}
 }
 
-EdgeCoordinatesProxy.propTypes = {
+EdgeCoordinatesListener.propTypes = {
 	onUpdated: PropTypes.func.isRequired,
 };
 
@@ -48,4 +48,4 @@ function getEdges(moreProps) {
 	};
 }
 
-export default EdgeCoordinatesProxy;
+export default EdgeCoordinatesListener;
