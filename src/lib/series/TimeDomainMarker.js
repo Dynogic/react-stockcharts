@@ -47,10 +47,14 @@ class TimeDomainMarker extends Component {
 			const lastBar = last(visibleMarker.bars);
 			const x = Math.round(xScale(xAccessor(firstBar)));
 			const x2 = Math.round(xScale(xAccessor(lastBar)));
+			let width = x2 - x;
+			if (width < 1) {
+				width = 1;
+			}
 			const y = 0;
 			const y2 = height;
 			ctx.fillStyle = hexToRGBA(getFill(), opacity);
-			ctx.fillRect(x, y, x2 - x, y2);
+			ctx.fillRect(x, y, width, y2);
 		});
 	}
 	// eslint-disable-next-line no-unused-vars
