@@ -53,7 +53,10 @@ class TimeDomainMarker extends Component {
 			}
 			const y = 0;
 			const y2 = height;
-			ctx.fillStyle = hexToRGBA(getFill(), opacity);
+			ctx.fillStyle = hexToRGBA(
+				visibleMarker.fill ? visibleMarker.fill : getFill(),
+				opacity
+			);
 			ctx.fillRect(x, y, width, y2);
 		});
 	}
