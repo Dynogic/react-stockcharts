@@ -29,6 +29,8 @@ class EventCapture extends Component {
 		this.handleTouchMove = this.handleTouchMove.bind(this);
 		this.handlePinchZoom = this.handlePinchZoom.bind(this);
 		this.handlePinchZoomEnd = this.handlePinchZoomEnd.bind(this);
+		this.addListeners = this.addListeners.bind(this);
+		this.removeListeners = this.removeListeners.bind(this);
 
 		this.handleClick = this.handleClick.bind(this);
 
@@ -55,8 +57,33 @@ class EventCapture extends Component {
 	componentWillMount() {
 		this.focus = this.props.focus;
 	}
+	removeListeners() {
+		this.node.removeEventListener("wheel", this.handleWheel);
+		this.node.removeEventListener("touchstart", this.handleTouchStart);
+		this.node.removeEventListener("touchmove", this.handleTouchMove);
+	}
+	addListeners() {
+		this.removeListeners();
+		let passiveSupported = false;
+		try {
+			const options = {
+				get passive() { // This function will be called when the browser
+					//   attempts to access the passive property.
+					passiveSupported = true;
+				}
+			};
+			window.addEventListener("test", options, options);
+			window.removeEventListener("test", options, options);
+		} catch (err) {
+			passiveSupported = false;
+		}
+		this.node.addEventListener("wheel", this.handleWheel, passiveSupported ? { passive: false } : false);
+		this.node.addEventListener("touchstart", this.handleTouchStart, passiveSupported ? { passive: false } : false);
+		this.node.addEventListener("touchmove", this.handleTouchMove, passiveSupported ? { passive: false } : false);
+	}
 	componentDidMount() {
 		if (this.node) {
+			this.addListeners();
 			select(this.node)
 				.on(MOUSEENTER, this.handleEnter)
 				.on(MOUSELEAVE, this.handleLeave);
@@ -67,6 +94,7 @@ class EventCapture extends Component {
 	}
 	componentWillUnmount() {
 		if (this.node) {
+			this.removeListeners();
 			select(this.node)
 				.on(MOUSEENTER, null)
 				.on(MOUSELEAVE, null);
@@ -403,6 +431,7 @@ class EventCapture extends Component {
 		const { onMouseMove } = this.props;
 		const touchXY = touchPosition(getTouchProps(e.touches[0]), e);
 		onMouseMove(touchXY, "touch", e);
+		e.preventDefault();
 	}
 	handleTouchStart(e) {
 		this.mouseInteraction = false;
@@ -526,12 +555,9 @@ class EventCapture extends Component {
 				: "react-stockcharts-crosshair-cursor";
 
 		const interactionProps = disableInteraction || {
-			onWheel: this.handleWheel,
 			onMouseDown: this.handleMouseDown,
 			onClick: this.handleClick,
 			onContextMenu: this.handleRightClick,
-			onTouchStart: this.handleTouchStart,
-			onTouchMove: this.handleTouchMove,
 		};
 
 		return (
